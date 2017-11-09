@@ -2,12 +2,12 @@ package RedeSociall;
 
 public class Usuario {
 	private int idUsuario;
-    private String login;
+    private String eMail;
     private String senha;
     
-    public Usuario(int idUsuario,String login,String senha) {
+    public Usuario(int idUsuario,String eMail,String senha) {
     	this.idUsuario = idUsuario;
-    	this.login = login;
+    	this.eMail = eMail;
     	this.senha = senha;
     }
 	public int getIdUsuario() {
@@ -16,11 +16,11 @@ public class Usuario {
 	public void setIdUsuario(int idUsuario) {
 		this.idUsuario = idUsuario;
 	}
-	public String getLogin() {
-		return login;
+	public String getE_Mail() {
+		return eMail;
 	}
-	public void setLogin(String login) {
-		this.login = login;
+	public void setE_Mail(String eMail) {
+		this.eMail = eMail;
 	}
 	public String getSenha() {
 		return senha;
@@ -30,7 +30,7 @@ public class Usuario {
 	}
     
 	public String toString() {
-		return "\nId-Usuario: "+ idUsuario + "\nLogin: " + login + "\nSenha: "+ senha ;
+		return "\nId-Usuario: "+ idUsuario + "\nE-Mail: " + eMail + "\nSenha: "+ senha ;
 		
 	}
 	
