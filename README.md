@@ -1,2 +1,0 @@
-# RedeSocial
-trabalho 
