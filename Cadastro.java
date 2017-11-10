@@ -9,10 +9,10 @@ public class Cadastro {
 	
 	public void logar(Usuario x,String eMail,String senhaA) {
 		for (Usuario l : this.Cadastrados) {
-			if(x.getLogin() == eMail && x.getSenha() == senhaA) {
+			if(x.getE_Mail() == eMail && x.getSenha() == senhaA) {
 				System.out.println("\nLogin efetuado");
 			}
-			else if(x.getLogin() != eMail) {
+			else if(x.getE_Mail() != eMail) {
 				System.out.println("\nE-Mail nao cadastrado");
 			}
 			else {
