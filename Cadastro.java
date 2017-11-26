@@ -3,30 +3,23 @@ package RedeSociall;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Cadastro {
 	
-	List <Usuario> Cadastrados = new ArrayList<>();
-	
-	public void logar(Usuario x,String eMail,String senhaA) {
-		for (Usuario l : this.Cadastrados) {
-			if(x.getE_Mail() == eMail && x.getSenha() == senhaA) {
-				System.out.println("\nLogin efetuado");
-			}
-			else if(x.getE_Mail() != eMail) {
-				System.out.println("\nE-Mail nao cadastrado");
-			}
-			else {
-				System.out.println("\nSenha Incorreta");
-			}
-		}
-	}
+	 static List <Usuario> Cadastrados = new ArrayList<>();
 
-	
+//	Cadastra um usuario na rede
 	public void cadastrar(Usuario x) {
 		Cadastrados.add(x);
 	}
+	public List<Usuario> getCadastrados() {
+		return Cadastrados;
+	}
+	public void setCadastrados(List<Usuario> cadastrados) {
+		Cadastrados = cadastrados;
+	}
 	public void mostrarCadastrados() {
-		for (Usuario x : this.Cadastrados) {
+		for (Usuario x : Cadastro.Cadastrados) {
 			System.out.println(x);
 		}	
 	}
