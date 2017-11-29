@@ -1,0 +1,48 @@
+package RedeSocial1;
+
+import java.util.ArrayList;
+import RedeSocial1.DAOPessoa;
+import RedeSocial1.Usuario;
+
+public class TestaConexaoBD {
+
+	public static void main(String[] args) {
+		DAOPessoa conexao = new DAOPessoa();
+		
+		System.out.println("Criando pessoas...");
+		conexao.criarPessoa(new Usuario(123123,"MariaJoaquina@gmail.com", "15","Josefa",16));	
+		conexao.criarPessoa(new Usuario(1123,"Maria12ina@gmail.com", "88","ui",45));
+		System.out.println("-------------------------------------");
+		
+		System.out.println("Buscando uma Usuario...");
+		Usuario resultadoPessoa = conexao.buscarPessoa(1);
+		System.out.println(resultadoPessoa.toString());
+		System.out.println("-------------------------------------");
+		
+		System.out.println("Listando todas as pessoas do banco...");
+		ArrayList<Usuario> resultadoPessoas = conexao.verTodos();
+		for (Usuario p : resultadoPessoas) {
+			System.out.println(p.toString());
+		}
+		System.out.println("-------------------------------------");
+		
+		System.out.println("Editando uma pessoa...");
+		conexao.editarPessoa(123459,"maria",23);
+		
+		resultadoPessoas = conexao.verTodos();
+		for (Usuario p : resultadoPessoas) {
+			System.out.println(p.toString());
+		}
+		
+		System.out.println("-------------------------------------");
+		
+		System.out.println("Excluindo uma pessoa...");
+		conexao.excluirPessoa(1);
+		
+		resultadoPessoas = conexao.verTodos();
+		for (Usuario p : resultadoPessoas) {
+			System.out.println(p.toString());
+		}
+	}
+	
+}
