@@ -1,5 +1,4 @@
-package RedeSociall;
-
+package RedeSocial1;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -19,7 +18,8 @@ public class Usuario {
     List <Usuario> Amigos = new ArrayList<>();
     
     //Construtor
-    public Usuario(String eMail,String senha,String nome,int idade) {
+    public Usuario(int idUsuario,String eMail,String senha,String nome,int idade) {
+    	this.idUsuario = idUsuario;
     	this.eMail = eMail;
     	this.senha = senha;
     	this.nome = nome;
@@ -27,7 +27,11 @@ public class Usuario {
     	Usuario.this.cadastrar(this);
     }
     
-    public int getIdUsuario() {
+
+    
+
+
+	public int getIdUsuario() {
 		return idUsuario;
 	}
 	public void setIdUsuario(int idUsuario) {
