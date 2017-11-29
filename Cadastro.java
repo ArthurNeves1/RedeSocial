@@ -1,3 +1,4 @@
+Será excluida
 package RedeSociall;
 
 import java.util.ArrayList;
