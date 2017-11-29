@@ -1,0 +1,137 @@
+package RedeSocial1;
+
+import RedeSocial1.Usuario;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.sql.ResultSet;
+
+public class DAOPessoa {
+	
+	private ConexaoBD conexao;
+	
+	public DAOPessoa() {
+		// cria o objeto para conexão com banco, porém não o inicializa
+		// a conexão deve ser aberta e, consequentemente, fechada durante o envio de comandos
+		// ao banco
+		this.conexao = new ConexaoBD();
+	}
+	
+	public void criarPessoa(Usuario User) {
+		// abrindo a conexão com o BD
+		conexao.conectar();
+
+		try {
+			// usando um PreparedStatement com valores externos como parâmetros (representados pelo '?')
+			PreparedStatement pst = conexao.getConexao().prepareStatement("insert into \"rede_social\".usuario(id_usuario,email,senha,nome_usuario,idade) values(?,?,?,?,?)");
+			// os métodos set devem ser escolhidos de acordo com os tipos dos atributos da entidade que está
+			// sendo acessada. A sequência é determinada por índices, iniciando do valor 1.
+			
+			pst.setInt(1,User.getIdUsuario());
+			pst.setString(2, User.geteMail());
+			pst.setString(3,User.getSenha());
+			pst.setString(4, User.getNome());
+			pst.setInt(5, User.getIdade());
+			
+			
+			
+			// solicitação da execução da query, após seu preparo
+			pst.execute();
+		} catch (SQLException e) {
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			// o banco deve ser desconectado, mesmo quando a exceção é lançada
+			conexao.desconectar();
+		}
+		
+	}
+	
+	// busca de pessoas por seu código de identificação no banco (id)
+	public Usuario buscarPessoa(int id) {
+		// abrindo a conexão com o BD
+		conexao.conectar();
+		// busca utilizando o método de consulta do objeto ConexaoBD
+		ResultSet resultado = conexao.executarSQL("select * from \"rede_social\".usuario where id_usuario = \'" + id + "\'");
+		Usuario User = new Usuario(id, null, null, null, id);
+	
+		try {
+			resultado.next();
+			// os métodos get devem ser escolhidos de acordo com os tipos dos atributos da entidade que está
+			// sendo acessada
+			int id_usuario = resultado.getInt("id_usuario");
+			String nome = resultado.getString("nome_usuario");
+			int idade = resultado.getInt("idade");
+			
+			User.setIdUsuario(id_usuario);
+			User.setNome(nome);
+			User.setIdade(idade);
+		} catch (SQLException e) {
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			// o banco deve ser desconectado, mesmo quando a exceção é lançada
+			conexao.desconectar();
+		}
+		return User;
+	}
+	
+	public void excluirPessoa(int id) {
+		// abrindo a conexão com o BD
+		conexao.conectar();
+		
+		try {
+			PreparedStatement stm = conexao.getConexao().prepareStatement("delete from \"rede_social\".usuario where id_usuario = \'" + id + "\'");
+			stm.execute();
+		} catch (SQLException e) {
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			// o banco deve ser desconectado, mesmo quando a exceção é lançada
+			conexao.desconectar();
+		}
+	}
+
+	public void editarPessoa(int id_usuario, String nome, int idade) {
+		// abrindo a conexão com o BD
+		conexao.conectar();
+		
+		try {
+			PreparedStatement stm = conexao.getConexao().prepareStatement("update \"rede_social\".usuario set nome_usuario = ?, idade = ? "
+					+ "where id_usuario = \'" + id_usuario + "\'");
+			stm.setString(1, nome);
+			stm.setInt(2, idade);
+			stm.execute();
+		} catch (SQLException e) {
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			// o banco deve ser desconectado, mesmo quando a exceção é lançada
+			conexao.desconectar();
+		}
+	}
+	
+	public ArrayList<Usuario> verTodos() {
+		ArrayList<Usuario> pessoas = new ArrayList<>();
+		
+		// abrindo a conexão com o BD
+		conexao.conectar();
+		ResultSet resultado = conexao.executarSQL("select * from \"rede_social\".usuario");
+		
+		try {
+			// para iterar sobre os resultados de uma consulta, deve-se utilizar o método next()
+			while (resultado.next()) {
+				int idUsuario = resultado.getInt("id_usuario");
+				String nome = resultado.getString("nome_usuario");
+				int idade = resultado.getInt("idade");
+				String eMail = resultado.getString("email");
+				String senha = resultado.getString("senha");
+				
+				pessoas.add(new Usuario(idUsuario,eMail,senha, nome, idade));
+			}
+		} catch (SQLException e) {
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			// o banco deve ser desconectado, mesmo quando a exceção é lançada
+			conexao.desconectar();
+		}
+		return pessoas;
+	}
+
+}
