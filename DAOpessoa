@@ -6,9 +6,9 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.sql.ResultSet;
 
+
 public class DAOPessoa {
-	
-	private ConexaoBD conexao;
+private ConexaoBD conexao;
 	
 	public DAOPessoa() {
 		// cria o objeto para conexão com banco, porém não o inicializa
@@ -133,5 +133,34 @@ public class DAOPessoa {
 		}
 		return pessoas;
 	}
+	public Usuario login(Usuario x) {
+		conexao.conectar();
+		ResultSet resultado = conexao.executarSQL("select * from \"user\".usuario where id_usuario like \'%" + x.getIdUsuario() +"%\'");
 
-}
+		try {
+			resultado.next();
+			String senha = resultado.getString("senha");
+			if( senha.equals(x.getSenha())) {
+				System.out.println("Usuario logado com sucesso, recuperando dados");
+				String nomeUsuario = resultado.getString("nome");
+				int idadeUsuario = resultado.getInt("idade");
+				String emailUsuario = resultado.getString("email");
+				x.setNome(nomeUsuario);
+				x.seteMail(emailUsuario);
+				x.setIdade(idadeUsuario);
+				x.setLogin(true);
+				System.out.println("dados recuperados");
+				
+			}else {
+				System.out.println("senha invalida, tente novamente:");
+				}
+			}
+		catch(Exception e) {
+			System.out.println("Usuario não existe, tente novamente:");
+		}finally {
+			conexao.desconectar();
+		}
+		return x;
+	}		
+	}
+
