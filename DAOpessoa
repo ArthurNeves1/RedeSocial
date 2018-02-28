@@ -133,34 +133,29 @@ private ConexaoBD conexao;
 		}
 		return pessoas;
 	}
-	public Usuario login(Usuario x) {
+	public Usuario login(String eMail1, String senha1 ){
+		Usuario teste = null;
 		conexao.conectar();
-		ResultSet resultado = conexao.executarSQL("select * from \"user\".usuario where id_usuario like \'%" + x.getIdUsuario() +"%\'");
+		ResultSet resultado = conexao.executarSQL("select * from \"rede_social\".usuario where email = \'" + eMail1 +"\' and senha =\'" + senha1 +"\' ");
 
 		try {
 			resultado.next();
-			String senha = resultado.getString("senha");
-			if( senha.equals(x.getSenha())) {
-				System.out.println("Usuario logado com sucesso, recuperando dados");
-				String nomeUsuario = resultado.getString("nome");
-				int idadeUsuario = resultado.getInt("idade");
-				String emailUsuario = resultado.getString("email");
-				x.setNome(nomeUsuario);
-				x.seteMail(emailUsuario);
-				x.setIdade(idadeUsuario);
-				x.setLogin(true);
-				System.out.println("dados recuperados");
-				
-			}else {
-				System.out.println("senha invalida, tente novamente:");
-				}
-			}
+			int id_usuario0 = resultado.getInt("id_usuario"); 
+			String email0 = resultado.getString("email");
+			String senha0 = resultado.getString("senha");
+			String nome_usuario0 = resultado.getString("nome_usuario");
+			int idade0 = resultado.getInt("idade");
+			teste = new Usuario(id_usuario0,email0,senha0,nome_usuario0,idade0);
+			System.out.println("Logado");
+			
+		}
 		catch(Exception e) {
 			System.out.println("Usuario não existe, tente novamente:");
 		}finally {
 			conexao.desconectar();
 		}
-		return x;
-	}		
+		return teste;
+		
+		
+		}		
 	}
-
