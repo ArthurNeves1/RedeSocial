@@ -156,6 +156,31 @@ private ConexaoBD conexao;
 		}
 		return teste;
 		
-		
-		}		
 	}
+	public Usuario buscarAmigo(String eMail1){
+		conexao.conectar();
+		
+		ResultSet resultado = conexao.executarSQL("select nome_usuario,idade from \"rede_social\".usuario where email = \'" + eMail1 + "\'");
+		Usuario User = null;
+		
+		
+		try {
+			resultado.next();
+			
+			String eMail = resultado.getString("email");
+			String nome = resultado.getString("nome_usuario");
+			int idade = resultado.getInt("idade");
+			
+			User.seteMail(eMail);
+			User.setNome(nome);
+			User.setIdade(idade);
+		} catch (SQLException e) {
+			System.out.println("Erro: " + e.getMessage());
+		} finally {
+			
+			conexao.desconectar();
+		}
+		return User;
+	}
+		
+		}
