@@ -9,7 +9,16 @@ import java.sql.ResultSet;
 
 public class DAOPessoa {
 private ConexaoBD conexao;
-	
+private boolean login = false;
+
+public boolean isLogin() {
+	return login;
+}
+
+public void setLogin(boolean login) {
+	this.login = login;
+}
+
 	public DAOPessoa() {
 		// cria o objeto para conexão com banco, porém não o inicializa
 		// a conexão deve ser aberta e, consequentemente, fechada durante o envio de comandos
@@ -157,7 +166,7 @@ private ConexaoBD conexao;
 		return teste;
 		
 	}
-	public Usuario buscarAmigo(String eMail1){
+	public Usuario buscarUsuario(String eMail1){
 		conexao.conectar();
 		
 		ResultSet resultado = conexao.executarSQL("select nome_usuario,idade from \"rede_social\".usuario where email = \'" + eMail1 + "\'");
@@ -165,15 +174,22 @@ private ConexaoBD conexao;
 		
 		
 		try {
-			resultado.next();
 			
-			String eMail = resultado.getString("email");
-			String nome = resultado.getString("nome_usuario");
-			int idade = resultado.getInt("idade");
+			while (resultado.next()) {
+			
+			String eMail = resultado.getString(2);
+			String nome = resultado.getString(4);
+			int idade = resultado.getInt(5);
 			
 			User.seteMail(eMail);
 			User.setNome(nome);
 			User.setIdade(idade);
+			
+			
+			User = new Usuario((Integer) null,eMail,null,nome,idade);
+			
+			resultado.next();
+			}
 		} catch (SQLException e) {
 			System.out.println("Erro: " + e.getMessage());
 		} finally {
@@ -182,5 +198,6 @@ private ConexaoBD conexao;
 		}
 		return User;
 	}
-		
+
+	
 		}
