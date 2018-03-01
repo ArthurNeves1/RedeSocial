@@ -1,0 +1,85 @@
+package RedeSocial1;
+
+import java.sql.ResultSet;
+import java.util.Scanner;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.ArrayList;
+import java.sql.ResultSet;
+
+public class Menu {
+
+	public static void main(String[] args) throws SQLException {
+		DAOPessoa conexao = new DAOPessoa();
+		String email = null;
+		ConexaoBD conexo = null;
+		
+		System.out.println("---------------------------------------------------------------");
+		System.out.println("BEM VINDO A REDE SOCIAL");
+		System.out.println("---------------------------------------------------------------");
+		
+		System.out.println("Menu:");
+		
+		System.out.println("Efetuar login : 1");
+		System.out.println("Efetuar cadastro : 2");
+		
+		System.out.println("informe o numero;");
+		Scanner numero = new Scanner(System.in);
+		int num = numero.nextInt();
+		
+		if(num == 2){
+			System.out.println("Digite id:");
+			int id = numero.nextInt();
+			System.out.println("DIgite e mail");
+			String email1 = numero.nextLine();
+			System.out.println("Digite senha:");
+			String senha = numero.nextLine();
+			System.out.println("Digte seu nome");
+			String nome = numero.nextLine();
+			System.out.println("Digite a idade");
+			int idade = numero.nextInt();
+			
+			Usuario p;
+			conexao.criarPessoa(p = new Usuario(id,email1,senha,nome,idade));	
+			
+		}else if(num == 1){
+			System.out.println("Efetue o login:");
+			System.out.println("Email: ");
+			email = numero.nextLine();
+			
+			System.out.println("Senha: ");
+			String senha = numero.nextLine();
+			
+			conexao.login(email, senha);
+			
+			conexao.setLogin(true);
+			
+		}
+		
+		if(conexao.isLogin()==true){
+			System.out.println("Opções:");
+			
+			System.out.println("Buscar Usuario : 1");
+			System.out.println("Excluir conta : 2");
+			System.out.println("informe o numero");
+			int nume = numero.nextInt();
+			if(num == 1){
+				System.out.println("informe o email do usuario que deseja buscar:");
+				String busca = numero.nextLine();
+				System.out.println(conexao.buscarUsuario(busca));
+			}else{
+				conexo.conectar();
+				ResultSet resultado = conexo.executarSQL("select id from \"rede_social\".usuario where email = \'" + email + "\'");
+				resultado.next();
+				int id_usuario0 = resultado.getInt("id_usuario"); 
+				
+				conexao.excluirPessoa(id_usuario0);
+				
+			}
+			
+		}
+		
+		
+	}
+
+}
